@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 )
 
-type Config struct {
+type config struct {
 	Name         string
 	VideoBitrate string
 	Maxrate      string
@@ -14,7 +14,7 @@ type Config struct {
 	AudioBitrate string
 }
 
-var resConfig = map[string]*Config{
+var resConfig = map[string]*config{
 	"360p": {
 		Name:         "360p",
 		VideoBitrate: "800k",
@@ -81,6 +81,15 @@ func getOptions(srcPath, targetPath, res string) []string {
 func GenerateHLS(ffmpegPath, srcPath, targetPath, res string) error {
 	options := getOptions(srcPath, targetPath, res)
 
+	cmd := exec.Command(ffmpegPath, options...)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	err := cmd.Start()
+	return err
+}
+
+func GenerateHLScustom(ffmpegPath, srcPath, targetPath string, options []string) error {
 	cmd := exec.Command(ffmpegPath, options...)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
