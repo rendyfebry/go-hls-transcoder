@@ -14,43 +14,40 @@ type Config struct {
 	AudioBitrate string
 }
 
-func getConfig(res string) *Config {
-	configs := map[string]*Config{
-		"360p": &Config{
-			Name:         "360p",
-			VideoBitrate: "800k",
-			Maxrate:      "856k",
-			BufSize:      "1200k",
-			AudioBitrate: "96k",
-		},
-		"480p": &Config{
-			Name:         "480p",
-			VideoBitrate: "1400k",
-			Maxrate:      "1498k",
-			BufSize:      "2100k",
-			AudioBitrate: "128k",
-		},
-		"720p": &Config{
-			Name:         "720p",
-			VideoBitrate: "2800k",
-			Maxrate:      "2996k",
-			BufSize:      "4200k",
-			AudioBitrate: "128k",
-		},
-		"1080p": &Config{
-			Name:         "1080p",
-			VideoBitrate: "5000k",
-			Maxrate:      "5350k",
-			BufSize:      "7500k",
-			AudioBitrate: "192k",
-		},
-	}
-
-	return configs[res]
+var resConfig = map[string]*Config{
+	"360p": {
+		Name:         "360p",
+		VideoBitrate: "800k",
+		Maxrate:      "856k",
+		BufSize:      "1200sk",
+		AudioBitrate: "96k",
+	},
+	"480p": {
+		Name:         "480p",
+		VideoBitrate: "1400k",
+		Maxrate:      "1498k",
+		BufSize:      "2100k",
+		AudioBitrate: "128k",
+	},
+	"720p": {
+		Name:         "720p",
+		VideoBitrate: "2800k",
+		Maxrate:      "2996k",
+		BufSize:      "4200k",
+		AudioBitrate: "128k",
+	},
+	"1080p": {
+		Name:         "1080p",
+		VideoBitrate: "5000k",
+		Maxrate:      "5350k",
+		BufSize:      "7500k",
+		AudioBitrate: "192k",
+	},
 }
 
 func getOptions(srcPath, targetPath, res string) []string {
-	config := getConfig(res)
+	config := resConfig[res]
+
 	filenameTS := filepath.Join(targetPath, res+"_%03d.ts")
 	filenameM3U8 := filepath.Join(targetPath, res+".m3u8")
 
