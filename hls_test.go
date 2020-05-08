@@ -17,5 +17,5 @@ func TestCmdExecuteFfmpeg(t *testing.T) {
 	fmt.Println("targetPath", targetPath)
 	fmt.Println("srcPath", srcPath)
 
-	GenerateHLS(ffmpegPath, srcPath, targetPath, "1080p")
+	GenerateHLS(ffmpegPath, srcPath, targetPath, "480p")
 }
