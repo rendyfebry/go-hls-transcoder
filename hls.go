@@ -4,49 +4,15 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+
+	c "github.com/rendyfebry/go-hls-transcoder/config"
 )
 
-type config struct {
-	Name         string
-	VideoBitrate string
-	Maxrate      string
-	BufSize      string
-	AudioBitrate string
-}
-
-var resConfig = map[string]*config{
-	"360p": {
-		Name:         "360p",
-		VideoBitrate: "800k",
-		Maxrate:      "856k",
-		BufSize:      "1200sk",
-		AudioBitrate: "96k",
-	},
-	"480p": {
-		Name:         "480p",
-		VideoBitrate: "1400k",
-		Maxrate:      "1498k",
-		BufSize:      "2100k",
-		AudioBitrate: "128k",
-	},
-	"720p": {
-		Name:         "720p",
-		VideoBitrate: "2800k",
-		Maxrate:      "2996k",
-		BufSize:      "4200k",
-		AudioBitrate: "128k",
-	},
-	"1080p": {
-		Name:         "1080p",
-		VideoBitrate: "5000k",
-		Maxrate:      "5350k",
-		BufSize:      "7500k",
-		AudioBitrate: "192k",
-	},
-}
-
-func getOptions(srcPath, targetPath, res string) []string {
-	config := resConfig[res]
+func getOptions(srcPath, targetPath, res string) ([]string, error) {
+	config, err := c.GetConfig(res)
+	if err != nil {
+		return nil, err
+	}
 
 	filenameTS := filepath.Join(targetPath, res+"_%03d.ts")
 	filenameM3U8 := filepath.Join(targetPath, res+".m3u8")
@@ -75,21 +41,25 @@ func getOptions(srcPath, targetPath, res string) []string {
 		filenameM3U8,
 	}
 
-	return options
+	return options, nil
 }
 
-func GenerateHLS(ffmpegPath, srcPath, targetPath, res string) error {
-	options := getOptions(srcPath, targetPath, res)
+// GenerateHLS will generate HLS file based on resolution presets
+func GenerateHLS(ffmpegPath, srcPath, targetPath, resolution string) error {
+	options, err := getOptions(srcPath, targetPath, resolution)
+	if err != nil {
+		return err
+	}
 
 	cmd := exec.Command(ffmpegPath, options...)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 
-	err := cmd.Start()
-	return err
+	return cmd.Start()
 }
 
-func GenerateHLScustom(ffmpegPath, srcPath, targetPath string, options []string) error {
+// GenerateHLScustom will generate HLS using the flexible options params
+func GenerateHLScustom(ffmpegPath string, options []string) error {
 	cmd := exec.Command(ffmpegPath, options...)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
