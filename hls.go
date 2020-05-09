@@ -6,6 +6,7 @@ import (
 )
 
 // GenerateHLS will generate HLS file based on resolution presets.
+// The available resolutions are: 360p. 480p, 720p and 1080p.
 func GenerateHLS(ffmpegPath, srcPath, targetPath, resolution string) error {
 	options, err := getOptions(srcPath, targetPath, resolution)
 	if err != nil {
