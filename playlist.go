@@ -7,6 +7,8 @@ import (
 	"path/filepath"
 )
 
+// Variant is HLS variant that gonna be use to generate HLS master playlist
+// https://developer.apple.com/documentation/http_live_streaming/example_playlists_for_http_live_streaming/creating_a_master_playlist
 type Variant struct {
 	// URL indicate the location of the variant playlist.
 	// If variant located on remote server, this url should
