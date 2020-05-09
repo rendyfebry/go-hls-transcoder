@@ -1,4 +1,4 @@
-package playlist
+package hls
 
 import (
 	"errors"

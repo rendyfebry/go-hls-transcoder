@@ -1,11 +1,10 @@
-package playlist
+package hls
 
 import (
 	"errors"
 	"fmt"
 	"os"
 	"path"
-	"strings"
 	"testing"
 )
 
@@ -58,18 +57,13 @@ func TestGenerateHLSVariant(t *testing.T) {
 }
 
 func TestGeneratePlaylist(t *testing.T) {
-	variants, err := GenerateHLSVariant([]string{"360p", "480p", "720p"}, "")
+	variants, err := GenerateHLSVariant([]string{"480p"}, "")
 	if err != nil {
 		panic(err)
 	}
 
-	base, err := os.Getwd()
-	if err != nil {
-		panic(err)
-	}
-
-	base = strings.Replace(base, "/playlist", "", 1)
-	targetPath := path.Join(base, "assets", "hls")
+	base, _ := os.Getwd()
+	targetPath := path.Join(base, "static")
 
 	GeneratePlaylist(variants, targetPath, "")
 }
