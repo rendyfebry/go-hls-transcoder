@@ -15,7 +15,7 @@ var preset = map[string]*config{
 		Name:         "360p",
 		VideoBitrate: "800k",
 		Maxrate:      "856k",
-		BufSize:      "1200sk",
+		BufSize:      "1200k",
 		AudioBitrate: "96k",
 	},
 	"480p": {
