@@ -51,8 +51,8 @@ var preset = map[string]*config{
 	},
 }
 
-// GetConfig return config from the available preset
-func GetConfig(res string) (*config, error) {
+// getConfig return config from the available preset
+func getConfig(res string) (*config, error) {
 	cfg, ok := preset[res]
 	if !ok {
 		return nil, errors.New("Preset not found")

@@ -5,15 +5,27 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-
-	cfg "github.com/rendyfebry/go-hls-transcoder/config"
 )
 
 type Variant struct {
-	URL        string
-	Bandwidth  string
+	// URL indicate the location of the variant playlist.
+	// If variant located on remote server, this url should
+	// contain the full url
+	URL string
+
+	// Bandwidth is an integer that is the upper bound of
+	// the overall bitrate for each media file, in bits per second
+	Bandwidth string
+
+	// Resolution is display size, in pixels, at which to display
+	// all of the video in the playlist
 	Resolution string
-	Codecs     string
+
+	// Codecs is quoted string containing a comma-separated list of formats,
+	// where each format specifies a media sample type that's present
+	// in a media segment in the playlist file. Valid format identifiers are
+	// those in the ISO file format name space defined by RFC 6381
+	Codecs string
 }
 
 // GenerateHLSVariant will generate variants info from the given resolutions
@@ -23,7 +35,7 @@ func GenerateHLSVariant(resOptions []string, locPrefix string) (variants []*Vari
 	}
 
 	for _, r := range resOptions {
-		c, err := cfg.GetConfig(r)
+		c, err := getConfig(r)
 		if err != nil {
 			continue
 		}
@@ -49,7 +61,9 @@ func GenerateHLSVariant(resOptions []string, locPrefix string) (variants []*Vari
 	return variants, nil
 }
 
-// GeneratePlaylist will generate playlist file from the given variants
+// GeneratePlaylist will generate playlist file from the given variants.
+// Variant itself can be generate from GenerateHLSVariant() function of
+// suplied by the caller
 func GeneratePlaylist(variants []*Variant, targetPath, filename string) {
 	// Set default filename
 	if filename == "" {
