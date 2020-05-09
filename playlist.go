@@ -8,7 +8,6 @@ import (
 )
 
 // Variant is HLS variant that gonna be use to generate HLS master playlist
-// https://developer.apple.com/documentation/http_live_streaming/example_playlists_for_http_live_streaming/creating_a_master_playlist
 type Variant struct {
 	// URL indicate the location of the variant playlist.
 	// If variant located on remote server, this url should
@@ -31,10 +30,13 @@ type Variant struct {
 }
 
 // GenerateHLSVariant will generate variants info from the given resolutions
-func GenerateHLSVariant(resOptions []string, locPrefix string) (variants []*Variant, err error) {
+// The available resolutions are: 360p, 480p, 720p and 1080p.
+func GenerateHLSVariant(resOptions []string, locPrefix string) ([]*Variant, error) {
 	if len(resOptions) == 0 {
 		return nil, errors.New("Please give at least 1 resolutions.")
 	}
+
+	var variants []*Variant
 
 	for _, r := range resOptions {
 		c, err := getConfig(r)
