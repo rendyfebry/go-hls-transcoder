@@ -28,9 +28,9 @@ func GenerateHLSVariant(resOptions []string, locPrefix string) (variants []*Vari
 			continue
 		}
 
-		url := c.Name
+		url := fmt.Sprintf("%s.m3u8", c.Name)
 		if locPrefix != "" {
-			url = fmt.Sprintf("%s/%s", locPrefix, c.Name)
+			url = locPrefix + "/" + url
 		}
 
 		v := &Variant{
@@ -69,12 +69,12 @@ func GeneratePlaylist(variants []*Variant, targetPath, filename string) {
 		}
 
 		data += "#EXT-X-STREAM-INF:"
-		data += fmt.Sprintf("BANDWIDTH:%s", v.Bandwidth)
+		data += fmt.Sprintf("BANDWIDTH=%s", v.Bandwidth)
 		if v.Resolution != "" {
-			data += fmt.Sprintf(",RESOLUTION:%s", v.Resolution)
+			data += fmt.Sprintf(",RESOLUTION=%s", v.Resolution)
 		}
 		if v.Codecs != "" {
-			data += fmt.Sprintf(",CODECS:%s", v.Codecs)
+			data += fmt.Sprintf(",CODECS=%s", v.Codecs)
 		}
 
 		data += fmt.Sprintf("\n%s\n", v.URL)
