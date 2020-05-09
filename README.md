@@ -33,3 +33,7 @@ func main() {
 	}
 }
 ```
+
+## License
+
+MIT licensed. See the LICENSE.md file for details.
