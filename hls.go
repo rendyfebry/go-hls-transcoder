@@ -5,11 +5,11 @@ import (
 	"os/exec"
 	"path/filepath"
 
-	c "github.com/rendyfebry/go-hls-transcoder/config"
+	cfg "github.com/rendyfebry/go-hls-transcoder/config"
 )
 
 func getOptions(srcPath, targetPath, res string) ([]string, error) {
-	config, err := c.GetConfig(res)
+	config, err := cfg.GetConfig(res)
 	if err != nil {
 		return nil, err
 	}

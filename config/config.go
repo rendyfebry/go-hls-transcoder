@@ -8,6 +8,8 @@ type config struct {
 	Maxrate      string
 	BufSize      string
 	AudioBitrate string
+	Resolution   string
+	Bandwidth    string
 }
 
 var preset = map[string]*config{
@@ -17,6 +19,8 @@ var preset = map[string]*config{
 		Maxrate:      "856k",
 		BufSize:      "1200k",
 		AudioBitrate: "96k",
+		Resolution:   "640x360",
+		Bandwidth:    "800000",
 	},
 	"480p": {
 		Name:         "480p",
@@ -24,6 +28,8 @@ var preset = map[string]*config{
 		Maxrate:      "1498k",
 		BufSize:      "2100k",
 		AudioBitrate: "128k",
+		Resolution:   "842x480",
+		Bandwidth:    "1400000",
 	},
 	"720p": {
 		Name:         "720p",
@@ -31,6 +37,8 @@ var preset = map[string]*config{
 		Maxrate:      "2996k",
 		BufSize:      "4200k",
 		AudioBitrate: "128k",
+		Resolution:   "1280x720",
+		Bandwidth:    "2800000",
 	},
 	"1080p": {
 		Name:         "1080p",
@@ -38,6 +46,8 @@ var preset = map[string]*config{
 		Maxrate:      "5350k",
 		BufSize:      "7500k",
 		AudioBitrate: "192k",
+		Resolution:   "1920x1080",
+		Bandwidth:    "5000000",
 	},
 }
 
