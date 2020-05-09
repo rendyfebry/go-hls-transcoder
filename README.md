@@ -1,5 +1,7 @@
 # Go HLS Transcoder
 
+[![GoDoc](https://godoc.org/github.com/rendyfebry/go-hls-transcoder?status.svg)](https://godoc.org/github.com/rendyfebry/go-hls-transcoder)
+
 Simple golang HLS transcoder with ffmpeg
 
 ## Prerequisite
