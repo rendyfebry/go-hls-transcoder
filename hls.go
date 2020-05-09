@@ -1,3 +1,5 @@
+// Package hls provides a few functionalities to generate HLS
+// files using ffmpeg.
 package hls
 
 import (
