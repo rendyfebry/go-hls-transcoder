@@ -1,4 +1,4 @@
-package hls
+package playlist
 
 import (
 	"errors"
@@ -10,15 +10,14 @@ import (
 )
 
 type Variant struct {
-	Filename   string
-	Prefix     string
+	URL        string
 	Bandwidth  string
 	Resolution string
 	Codecs     string
 }
 
 // GenerateHLSVariant will generate variants info from the given resolutions
-func GenerateHLSVariant(resOptions []string) (variants []*Variant, err error) {
+func GenerateHLSVariant(resOptions []string, locPrefix string) (variants []*Variant, err error) {
 	if len(resOptions) == 0 {
 		return nil, errors.New("Please give at least 1 resolutions.")
 	}
@@ -29,8 +28,13 @@ func GenerateHLSVariant(resOptions []string) (variants []*Variant, err error) {
 			continue
 		}
 
+		url := c.Name
+		if locPrefix != "" {
+			url = fmt.Sprintf("%s/%s", locPrefix, c.Name)
+		}
+
 		v := &Variant{
-			Filename:   c.Name,
+			URL:        url,
 			Bandwidth:  c.Bandwidth,
 			Resolution: c.Resolution,
 		}
@@ -38,7 +42,7 @@ func GenerateHLSVariant(resOptions []string) (variants []*Variant, err error) {
 		variants = append(variants, v)
 	}
 
-	if len(resOptions) == 0 {
+	if len(variants) == 0 {
 		return nil, errors.New("No valid resolutions found.")
 	}
 
@@ -46,7 +50,7 @@ func GenerateHLSVariant(resOptions []string) (variants []*Variant, err error) {
 }
 
 // GeneratePlaylist will generate playlist file from the given variants
-func GeneratePlaylist(targetPath, filename, varLocPrefix string, variants []*Variant) {
+func GeneratePlaylist(variants []*Variant, targetPath, filename string) {
 	// Set default filename
 	if filename == "" {
 		filename = "playlist.m3u8"
@@ -58,27 +62,22 @@ func GeneratePlaylist(targetPath, filename, varLocPrefix string, variants []*Var
 
 	// Add M3U Info for each variant
 	for _, v := range variants {
-		// Filename & bandwidth is required,
+		// URL & bandwidth is required,
 		// if not found we will excluded them from the playlist
-		if v.Filename == "" || v.Bandwidth == "" {
+		if v.URL == "" || v.Bandwidth == "" {
 			continue
 		}
 
 		data += "#EXT-X-STREAM-INF:"
 		data += fmt.Sprintf("BANDWIDTH:%s", v.Bandwidth)
 		if v.Resolution != "" {
-			data += fmt.Sprintf("RESOLUTION:%s", v.Resolution)
+			data += fmt.Sprintf(",RESOLUTION:%s", v.Resolution)
 		}
 		if v.Codecs != "" {
-			data += fmt.Sprintf("CODECS:%s", v.Codecs)
+			data += fmt.Sprintf(",CODECS:%s", v.Codecs)
 		}
 
-		varLoc := v.Filename
-		if v.Prefix != "" {
-			varLoc = fmt.Sprintf("%s/%s", v.Prefix, v.Filename)
-		}
-
-		data += fmt.Sprintf("\n%s", varLoc)
+		data += fmt.Sprintf("\n%s\n", v.URL)
 	}
 
 	// Write everything to the file
