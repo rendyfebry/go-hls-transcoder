@@ -29,7 +29,7 @@ type Variant struct {
 	Codecs string
 }
 
-// GenerateHLSVariant will generate variants info from the given resolutions
+// GenerateHLSVariant will generate variants info from the given resolutions.
 // The available resolutions are: 360p, 480p, 720p and 1080p.
 func GenerateHLSVariant(resOptions []string, locPrefix string) ([]*Variant, error) {
 	if len(resOptions) == 0 {
