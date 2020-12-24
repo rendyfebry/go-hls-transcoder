@@ -22,7 +22,6 @@ import (
 )
 
 func main() {
-	ffmpegPath := "/usr/local/bin/ffmpeg"
 	srcPath := "/assets/raw/movie.mov"
 	targetPath := "/assets/hls"
 	resOptions := []string{"480p", "720p"}
@@ -31,7 +30,7 @@ func main() {
 	hlsPlaylist.GeneratePlaylist(variants, targetPath, "")
 
 	for _, res := range resOptions {
-		hls.GenerateHLS(ffmpeg, srcPath, targetPath, res)
+		hls.GenerateHLS(srcPath, targetPath, res)
 	}
 }
 ```
